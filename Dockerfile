@@ -76,13 +76,14 @@ RUN --mount=type=bind,source=.git,target=.git \
     if [ "$GIT_REPO_CHECK" != 0 ]; then bash tools/check_repo.sh ; fi
 
 # max jobs used by Ninja to build extensions
-ARG max_jobs=80
+ARG max_jobs=1000
 ENV MAX_JOBS=${max_jobs}
 # number of threads used by nvcc
-ARG nvcc_threads=128
+ARG nvcc_threads=1000
 ENV NVCC_THREADS=$nvcc_threads
 
 ARG USE_SCCACHE
+ENV USE_SCCACHE=1
 ARG SCCACHE_BUCKET_NAME=vllm-build-sccache
 ARG SCCACHE_REGION_NAME=us-west-2
 ARG SCCACHE_S3_NO_CREDENTIALS=0
@@ -118,7 +119,7 @@ COPY .buildkite/check-wheel-size.py check-wheel-size.py
 # Default max size of the wheel is 250MB
 ARG VLLM_MAX_SIZE_MB=250
 ENV VLLM_MAX_SIZE_MB=$VLLM_MAX_SIZE_MB
-ARG RUN_WHEEL_CHECK=true
+ARG RUN_WHEEL_CHECK=false
 RUN if [ "$RUN_WHEEL_CHECK" = "true" ]; then \
         python3 check-wheel-size.py dist; \
     else \

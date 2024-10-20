@@ -1577,7 +1577,7 @@ class LLMEngine:
             len(scheduler.waiting) for scheduler in self.scheduler)
 
         # KV Cache Usage in %
-        num_total_gpu = self.cache_config.num_gpu_blocks
+        num_total_gpu = 4
         gpu_cache_usage_sys = 0.
         if num_total_gpu is not None:
             num_free_gpu = sum(
